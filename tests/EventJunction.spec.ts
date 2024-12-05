@@ -19,7 +19,7 @@ test('has title', async ({ page }) => {
 
 
 //Page1 test cases
-test('TC6', async ({ page }) => {
+test('TC6 - Registration form includes fields: Full Name, Email, Company, Title, Add registeration for self', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
@@ -34,7 +34,7 @@ test('TC6', async ({ page }) => {
 });
 
 
-test('TC7 - Verify the validation for email field in page 1', async ({ page }) => {
+test('TC7 - Validation for email field in page 1', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
@@ -44,7 +44,7 @@ test('TC7 - Verify the validation for email field in page 1', async ({ page }) =
 });
 
 
-test('TC9 - Verify that leaving the Name, Email or Title, Company field blank shows an error message (without title)', async ({ page }) => {
+test('TC9 - Leaving the Title field blank should show an error message', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
@@ -59,7 +59,7 @@ test('TC9 - Verify that leaving the Name, Email or Title, Company field blank sh
 });
 
 
-test('TC9 - Verify that leaving the Name, Email or Title, Company field blank shows an error message (without company)', async ({ page }) => {
+test('TC9 - Leaving the Company field blank should show an error message', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
@@ -73,7 +73,7 @@ test('TC9 - Verify that leaving the Name, Email or Title, Company field blank sh
 });
 
 
-test('TC9 - Verify that leaving the Name, Email or Title, Company field blank shows an error message (without Email)', async ({ page }) => {
+test('TC9 - Leaving the Email field blank should show an error message', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
@@ -88,7 +88,7 @@ test('TC9 - Verify that leaving the Name, Email or Title, Company field blank sh
 });
 
 
-test('TC9 -Verify that leaving the Name, Email or Title, Company field blank shows an error message (without LastName)', async ({ page }) => {
+test('TC9 - Leaving the LastName field blank should show an error message', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
@@ -102,7 +102,7 @@ test('TC9 -Verify that leaving the Name, Email or Title, Company field blank sho
 });
 
 
-test('TC9 -Verify that leaving the Name, Email or Title, Company field blank shows an error message (without FirstName)', async ({ page }) => {
+test('TC9 - Leaving the FirstName field blank should show an error message', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
@@ -127,8 +127,6 @@ test('TC12 - Clicking on the next button on Contact details', async ({ page }) =
   await EvJ.fillTitle(title);
   await EvJ.clickbuttonNext();
   await EvJ.getPage2();
-
-
 });
 
 
@@ -164,7 +162,7 @@ test('TC14 - Dietary preferences and disability needs fields should be optional'
     await EvJ.fillCompany(company);
     await EvJ.fillTitle(title);
     await EvJ.clickbuttonNext();
-    //await EvJ.getPage2();
+    await EvJ.getPage2();
     await EvJ.clickAddAttendee();
     await EvJ.getattendeeinfopage();
     await EvJ.fillfirstName(fName);
@@ -661,7 +659,7 @@ test('TC40 - Verify that entering a member-specific discount voucher validates u
     await EvJ.fillfirstName(fName);
     await EvJ.fillLastName(lName);
     await EvJ.fillEmail(email);
-    await EvJ.fillTitle("engineer");
+    await EvJ.fillTitle(title);
     await EvJ.clickbuttonSave();
     await EvJ.getPage2(); // main registration page
 
@@ -695,6 +693,27 @@ test('TC90 - Duplicate attendee should not be created for the same registration'
   await EvJ.clickbuttonSave();
   const errorMessage = page.locator('text="Attendee is already registered!"'); //text will be changed once the error text is finalized
   await expect(errorMessage).toBeVisible();
+});
+
+// the following code is to check that validation are working correctly
+test('CheckError - Checking if validation is showing', async ({ page }) => {
+  const EvJ = new EventJunction(page);
+    await EvJ.goto(); //
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillCompany(company);
+    await EvJ.fillTitle(title);
+    await EvJ.clickbuttonNext();
+    await EvJ.getPage2(); // main registration page
+    await EvJ.clickAddAttendee();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.clickbuttonSave();
+    // const errorMessage = page.locator('text="Attendee is already registered!"'); //text will be changed once the error text is finalized
+    // await expect(errorMessage).toBeVisible();
+    await EvJ.CheckToast();
 });
 
 
