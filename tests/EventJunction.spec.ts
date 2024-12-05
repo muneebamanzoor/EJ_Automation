@@ -3,9 +3,12 @@ import { EventJunction } from './EventJunction';
 
 const { faker } = require('@faker-js/faker');
 
+var fName = faker.name.firstName();
+var lName = faker.name.lastName();
+var email = faker.internet.email();
 
 test('has title', async ({ page }) => {
-  await page.goto('https://flow-saas-3661-dev-ed.scratch.my.site.com/s/?eventId=a05As00000AbeaDIET');
+  await page.goto('https://flow-saas-3661-dev-ed.scratch.my.site.com/s/?eventId=a05As00000AbSdtIAF');
 
 
   // Expect a title "to contain" a substring.
@@ -13,17 +16,20 @@ test('has title', async ({ page }) => {
   //Add presteps
 });
 
+
 //Page1 test cases
 test('TC6', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName(faker.name.firstName());
-  await EvJ.fillLastName(faker.name.lastName());
-  await EvJ.fillEmail(faker.internet.email());
-  await EvJ.fillCompany(faker.company.name());
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
+  await EvJ.fillCompany("CloudJunction");
   await EvJ.fillTitle("QA Manager");
+  await expect(page.locator("xpath=//*[@class='slds-checkbox_faux']")).toBeVisible();
   await EvJ.clickcheckbox();
+  await expect(EvJ.addselfasattendee).toBeChecked();
 });
 
 
@@ -34,11 +40,9 @@ test('TC7', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillEmail("abc");
+  await EvJ.fillEmail('abc');
   await EvJ.clickbuttonNext();
   await expect(EvJ.page1).toBeVisible();
-
-
 });
 
 
@@ -47,11 +51,12 @@ test('TC9 without title', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
-  await EvJ.fillLastName("Abdul");
-  await EvJ.fillEmail("Aleem@examplse.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillCompany("CloudJunction");
   await EvJ.clickbuttonNext();
+  await expect(EvJ.fillTitleValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 
 
@@ -61,11 +66,12 @@ test('TC9 without company', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
-  await EvJ.fillLastName("Abdul");
-  await EvJ.fillEmail("Aleem@examplse.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("qa");
   await EvJ.clickbuttonNext();
+  await expect(EvJ.fillCompanyValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 
 
@@ -75,11 +81,12 @@ test('TC9 without Email', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
-  await EvJ.fillLastName("Abdul");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
   await EvJ.fillTitle("qa");
   await EvJ.fillCompany("CloudJunction");
   await EvJ.clickbuttonNext();
+  await expect(EvJ.fillEmailValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 
 
@@ -91,11 +98,12 @@ test('TC9 without LastName', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
+  await EvJ.fillfirstName(fName);
   await EvJ.fillTitle("qa");
   await EvJ.fillCompany("CloudJunction");
-  await EvJ.fillEmail("Aleem@examplse.com");
+  await EvJ.fillEmail(email);
   await EvJ.clickbuttonNext();
+  await expect(EvJ.fillLnameValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 
 
@@ -109,9 +117,10 @@ test('TC9 without FirstName', async ({ page }) => {
   await EvJ.getStarted();
   await EvJ.fillTitle("qa");
   await EvJ.fillCompany("CloudJunction");
-  await EvJ.fillEmail("Aleem@examplse.com");
-  await EvJ.fillLastName("Abdul");
+  await EvJ.fillEmail(email);
+  await EvJ.fillLastName(lName);
   await EvJ.clickbuttonNext();
+  await expect(EvJ.fillFnameValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 
 
@@ -122,58 +131,80 @@ test('TC12', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
-  await EvJ.fillLastName("Abdul");
-  await EvJ.fillEmail("Aleem@examplse.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillCompany("CloudJunction");
   await EvJ.fillTitle("QA");
   await EvJ.clickbuttonNext();
-  await EvJ.getPage2;
+  await EvJ.getPage2();
 
 
 });
+
+
+// test('TC14', async ({ page }) => {
+//   const EvJ = new EventJunction(page);
+//   await EvJ.goto();
+// //   await EvJ.getStarted();
+//   await EvJ.fillfirstName("Aleem");
+//   await EvJ.fillLastName("Abdul");
+//   await EvJ.fillEmail("Aleem@examplse.com");
+//   await EvJ.fillCompany("CloudJunction");
+//   await EvJ.fillTitle("QA");
+//   await EvJ.clickbuttonNext();
+// //   await EvJ.getPage2();
+//   await EvJ.clickAddAttendee();
+//   await EvJ.getattendeeinfopage();
+//   await EvJ.fillfirstName("Peter");
+//   await EvJ.fillLastName("Pan");
+//   await EvJ.fillEmail("peter@pan.com");
+//   await EvJ.fillTitle("engineer");
+//   await EvJ.clickbuttonSave();
+//   await EvJ.getPage2();
+// });
 
 
 test('TC14', async ({ page }) => {
-  const EvJ = new EventJunction(page);
-  await EvJ.goto();
-  await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
-  await EvJ.fillLastName("Abdul");
-  await EvJ.fillEmail("Aleem@examplse.com");
-  await EvJ.fillCompany("CloudJunction");
-  await EvJ.fillTitle("QA");
-  await EvJ.clickbuttonNext();
-  await EvJ.getPage2;
-  await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("Peter");
-  await EvJ.fillLastName("Pan");
-  await EvJ.fillEmail("peter@pan.com");
-  await EvJ.fillTitle("engineer");
-  await EvJ.clickbuttonSave();
-  await EvJ.getPage2;
-
-
-});
+    const EvJ = new EventJunction(page);
+    await EvJ.goto();
+    // await EvJ.getStarted();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillCompany("CloudJunction");
+    await EvJ.fillTitle("QA");
+    await EvJ.clickbuttonNext();
+    //await EvJ.getPage2();
+    await EvJ.clickAddAttendee();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillTitle("engineer");
+    await EvJ.clickbuttonSave();
+    await EvJ.getPage2();
+  
+  });
 
 
 test('TC149', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
-  await EvJ.fillLastName("Abdul");
-  await EvJ.fillEmail("Aleem@examplse.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillCompany("CloudJunction");
   await EvJ.fillTitle("QA");
   await EvJ.clickbuttonNext();
-  await EvJ.getPage2;
+  await EvJ.getPage2();
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("Peter");
-  await EvJ.fillLastName("Pan");
-  await EvJ.fillEmail("peter@pan.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("engineer");
   await EvJ.clickbuttonSaveNew();
+
   //checkforattendeeinformation
 
 
@@ -222,13 +253,13 @@ test('TC22', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.fillfirstName("Aleem");
-  await EvJ.fillLastName("Abdul");
-  await EvJ.fillEmail("Aleem@examplse.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillCompany("CloudJunction");
   await EvJ.fillTitle("QA");
   await EvJ.clickbuttonNext();
-  await EvJ.getPage2;
+  await EvJ.getPage2();
   await EvJ.clickAddAttendee();
   await EvJ.fillfirstName("Peter");
   await EvJ.fillLastName("Pan");
@@ -237,7 +268,7 @@ test('TC22', async ({ page }) => {
   await EvJ.fillDisability("Visually Repaired");
   await EvJ.fillDietPreference("Vegan");
   await EvJ.clickbuttonSave();
-  await EvJ.getPage2;
+  await EvJ.getPage2();
  
   await expect.soft(page.getByRole('heading', { name: 'Peter Pan - Standard Entry' }).first()).toBeVisible();
   await expect.soft(page.getByRole('heading', { name: '(123) 129-0121 | peter@pan.com | Tesla' }).first()).toBeVisible();
@@ -335,8 +366,8 @@ test('TC141,TC140,137 Calculation', async ({ page }) => {
   await EvJ.getStarted();
   await EvJ.topage2();
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("Hamil");
-  await EvJ.fillLastName("ton"); //Expiry date is past
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName); //Expiry date is past
   await EvJ.fillTitle("CEO");
   //await EvJ.SelectTicket();
   await EvJ.clickbuttonSave();
@@ -379,9 +410,9 @@ test('TC119 Calculation', async ({ page }) => {
   await EvJ.getStarted();
   await EvJ.topage2();
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("peter");
-  await EvJ.fillLastName("paul");
-  await EvJ.fillEmail("xgjad@cmas.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("Manager");
   await EvJ.clickbuttonSave();
   await EvJ.clickbuttonNext();
@@ -438,15 +469,15 @@ test('TCTC111.2 1 promocode for redemption is left and 2 attendees are registeri
   await EvJ.getStarted();
   await EvJ.topage2();
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("Roman");
-  await EvJ.fillLastName("Abrahamovic");
-  await EvJ.fillEmail("Abrahamovic@example.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("Investor");
   await EvJ.clickbuttonSave();
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("French");
-  await EvJ.fillLastName("Loren");
-  await EvJ.fillEmail("loren@french.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("Broker");
   await EvJ.clickbuttonSave();
   await EvJ.clickbuttonCheckout();
@@ -505,16 +536,16 @@ test('TC95 Total tickets should update when attendee is added/Edited/Deleted ', 
   await EvJ.getStarted();
   await EvJ.topage2();
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("German");
-  await EvJ.fillLastName("Boey");
-  await EvJ.fillEmail("Boey@German.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("Brewer");
   await EvJ.clickbuttonSave();
   //await EvJ.Checktotal();
   //await EvJ.clickedit();
-  await EvJ.fillfirstName("German");
-  await EvJ.fillLastName("Boey");
-  await EvJ.fillEmail("Boey@German.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("Brewer");
   await EvJ.clickbuttonSave();
   //await EvJ.Checktotal();
@@ -529,20 +560,20 @@ test('TC58 - Verify that clicking "Cancel" on the checkout page redirects to the
     const EvJ = new EventJunction(page);
     await EvJ.goto(); //
     await EvJ.getStarted();
-    await EvJ.fillfirstName("Muneeba");
-    await EvJ.fillLastName("Manzoor");
-    await EvJ.fillEmail("muneeba@examplse.com");
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
     await EvJ.fillCompany("CloudJunction");
     await EvJ.fillTitle("QA");
     await EvJ.clickbuttonNext();
-    await EvJ.getPage2; //
+    await EvJ.getPage2(); //
     await EvJ.clickAddAttendee();
-    await EvJ.fillfirstName("Peter");
-    await EvJ.fillLastName("Pan");
-    await EvJ.fillEmail("peter@pan.com");
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
     await EvJ.fillTitle("engineer");
     await EvJ.clickbuttonCancel();
-    await EvJ.getPage2; //
+    await EvJ.getPage2(); //
  
   });
 
@@ -555,28 +586,28 @@ test('TC31 - Verify order summary includes all added attendees and their ticket 
     const EvJ = new EventJunction(page);
     await EvJ.goto(); //
     await EvJ.getStarted();
-    await EvJ.fillfirstName("Muneeba");
-    await EvJ.fillLastName("Manzoor");
-    await EvJ.fillEmail("muneeba@examplse.com");
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
     await EvJ.fillCompany("CloudJunction");
     await EvJ.fillTitle("QA");
     await EvJ.clickbuttonNext();
-    await EvJ.getPage2; // main registration page
+    await EvJ.getPage2(); // main registration page
     await EvJ.clickAddAttendee();
-    await EvJ.fillfirstName("Peter");
-    await EvJ.fillLastName("Pan");
-    await EvJ.fillEmail("peter@pan.com");
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
     await EvJ.fillTitle("engineer");
     await EvJ.clickbuttonSave();
-    await EvJ.getPage2; // main registration page
+    await EvJ.getPage2(); // main registration page
 
 
     await EvJ.clickbuttonCheckout(); // clicking checkout button
-    await EvJ.getPage3; // checkout page with order summary section
+    await EvJ.getPage3(); // checkout page with order summary section
 
 
-    const attendee1 = await page.locator("//lightning-layout[3]/slot[1]/lightning-layout-item[1]/slot[1]/div[1]").innerText();
-    const attendee2 = await page.locator("//lightning-layout[4]//slot[1]//lightning-layout-item[1]//slot[1]//div[1]").innerText();
+    const attendee1 = await page.locator("xpath='//lightning-layout[3]/slot[1]/lightning-layout-item[1]/slot[1]/div[1]'").innerText();
+    const attendee2 = await page.locator("xpath='//lightning-layout[4]//slot[1]//lightning-layout-item[1]//slot[1]//div[1]'").innerText();
 
 
     expect(attendee1).toContain('1 x Standard Entry');
@@ -585,29 +616,27 @@ test('TC31 - Verify order summary includes all added attendees and their ticket 
   });
 
 
-
-
 test('TC38 - Verify that changes made in "Edit" mode are saved correctly', async ({ page }) => {
     const EvJ = new EventJunction(page);
     await EvJ.goto();
     await EvJ.getStarted();
-    await EvJ.fillfirstName("Muneeba");
-    await EvJ.fillLastName("Manzoor");
-    await EvJ.fillEmail("muneeba@examplse.com");
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
     await EvJ.fillCompany("CloudJunction");
     await EvJ.fillTitle("QA");
     await EvJ.clickbuttonNext();
-    await EvJ.getPage2;
+    await EvJ.getPage2();
     await EvJ.ClickButtonEdit();
-    await EvJ.fillfirstName("Henry");
-    await EvJ.fillLastName("Clinton");
-    await EvJ.fillEmail("henryclinton@yopmail.com");
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
     await EvJ.fillTitle("QA engineer");
     const actualname = await page.locator("Fname").innerText();
     await EvJ.clickbuttonSave();
  
-    await EvJ.getPage2;
-    const expectedname = await page.locator("lightning-layout-item[@class='slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_10-of-12']//lightning-layout-item[1]//lightning-layout[1]//lightning-layout-item[1]//h1[1]").innerText();
+    await EvJ.getPage2();
+    const expectedname = await page.locator("xpath='lightning-layout-item[@class='slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_10-of-12']//lightning-layout-item[1]//lightning-layout[1]//lightning-layout-item[1]//h1[1]'").innerText();
     expect(expectedname).toContain(actualname);
 
 
@@ -617,15 +646,21 @@ test('TC38 - Verify that changes made in "Edit" mode are saved correctly', async
   });
 
 
-
-
 test('TC10 - Verify that an error message is displayed for missing ticket type', async ({ page }) => {
     const EvJ = new EventJunction(page);
-    await EvJ.getPage2();
+    await EvJ.goto(); //
+    await EvJ.getStarted();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillCompany("CloudJunction");
+    await EvJ.fillTitle("QA");
+    await EvJ.clickbuttonNext();
+    await EvJ.getPage2(); // main registration page
     await EvJ.clickAddAttendee();
-    await EvJ.fillfirstName("Henry");
-    await EvJ.fillLastName("Clinton");
-    await EvJ.fillEmail("henryclinton@yopmail.com");
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
     await EvJ.fillTitle("QA engineer");
     await EvJ.clickbuttonSave();
 
@@ -637,31 +672,54 @@ test('TC10 - Verify that an error message is displayed for missing ticket type',
 
 test('TC55 - Verify that clicking "Cancel" closes the registration window', async ({ page }) => {
   const EvJ = new EventJunction(page);
-  await EvJ.getPage2();
-  await EvJ.getPage3();
+  await EvJ.goto(); //
+  await EvJ.getStarted();
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
+  await EvJ.fillCompany("CloudJunction");
+  await EvJ.fillTitle("QA");
+  await EvJ.clickbuttonNext();
+  await EvJ.getPage2(); 
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("Henry");
-  await EvJ.fillLastName("Clinton");
-  await EvJ.fillEmail("henryclinton@yopmail.com");
+  await EvJ.getattendeeinfopage
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("QA engineer");
   await EvJ.clickbuttonCancel();
-  await expect(EvJ.page2).toBeHidden()
+  await expect(EvJ.attendeeinfopage).toBeHidden();
 });
 
 
 test('TC40 - Verify that entering a member-specific discount voucher validates user membership', async ({ page }) => {
   const EvJ = new EventJunction(page);
-  await EvJ.topage3();
+  await EvJ.goto(); //
+    await EvJ.getStarted();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillCompany("CloudJunction");
+    await EvJ.fillTitle("QA");
+    await EvJ.clickbuttonNext();
+    await EvJ.getPage2(); // main registration page
+    await EvJ.clickAddAttendee();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillTitle("engineer");
+    await EvJ.clickbuttonSave();
+    await EvJ.getPage2(); // main registration page
+
+    await EvJ.clickbuttonCheckout(); // clicking checkout button
  
-  await EvJ.fillPromocode("MEMBER15"); // promocode will be changed
+  await EvJ.fillPromocode("MEMBER15"); // promocode will be changed once the list of promo code is provided
   await EvJ.clickbuttonApply();
   const successMessage = page.locator('text="Discount Applied Succesfully!"');
   await expect(successMessage).toBeVisible();
 
 
 });
-
-
 
 
 test('TC41 - Verify that non-members see an error when using a member-only voucher', async ({ page }) => {
@@ -671,24 +729,25 @@ test('TC41 - Verify that non-members see an error when using a member-only vouch
 
   await EvJ.fillPromocode("MEMBER15");
   await EvJ.clickbuttonApply();
-  const errorMessage = page.locator('text="Discount Code is only valid for Members"');
+  const errorMessage = page.locator('text="Discount Code is only valid for Members"'); //text will be changed once the error text is finalized
   await expect(errorMessage).toBeVisible();
 });
-
-
 
 
 test('TC90 - Duplicate attendee should not be created for the same registration', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.topage2();
   await EvJ.clickAddAttendee();
-  await EvJ.fillfirstName("Henry");
-  await EvJ.fillLastName("Clinton");
-  await EvJ.fillEmail("henryclinton@yopmail.com");
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email);
   await EvJ.fillTitle("QA engineer");
   await EvJ.clickbuttonSave();
-  const errorMessage = page.locator('text="Attendee is already registered!"');
+  const errorMessage = page.locator('text="Attendee is already registered!"'); //text will be changed once the error text is finalized
   await expect(errorMessage).toBeVisible();
 
 
 });
+
+
+
