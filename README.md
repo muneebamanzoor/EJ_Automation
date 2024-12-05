@@ -1,3 +1,5 @@
+ **Steps to use this Script:** 
+
 To make the script workable, following are the prerequisites.
 
 1. Install playwright using https://playwright.dev/docs/intro#installing-playwright in VS code
