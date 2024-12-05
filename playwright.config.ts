@@ -9,7 +9,8 @@ export default defineConfig({
   reporter: 'html',
   use: {
     trace: 'on',
-    video: 'on'
+    video: 'on',
+    screenshot: 'on'
   },
 
   projects: [
