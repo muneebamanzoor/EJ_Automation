@@ -9,6 +9,7 @@ To make the script workable, following are the prerequisites.
 4. Install Playwright extension in VScode
 
 5. Install faker.js library by running the following command:
-       npm install --save-dev @faker-js/faker
+              npm install --save-dev @faker-js/faker
 
-6. To run the automation scripts on the an other device, add that device to the project list in playwright.config.js file in the root directory
+6. To run the automation scripts on the an other device, add that device to the project list in playwright.config.js file in the root directory and run the following command:
+          npx playwright test --project="<projectName>" --config=../playwright.config.ts
