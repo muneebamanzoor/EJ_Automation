@@ -2,9 +2,11 @@ import { expect, type Locator, type Page } from '@playwright/test';
 
 const { faker } = require('@faker-js/faker');
 
-var fName = faker.name.firstName();
-var lName = faker.name.lastName();
+var fName = faker.person.firstName();
+var lName = faker.person.lastName();
 var email = faker.internet.email();
+var company = faker.company.name();
+var title = faker.person.jobTitle(); 
 
 export class EventJunction {
   readonly fillFnameValidation: Locator;
@@ -44,8 +46,7 @@ export class EventJunction {
   readonly ExpiryYear: Locator;
   readonly CardCVV: Locator;
   readonly ButtonSubmitPayment: Locator;
-
-
+  readonly attendeeInfoErrorToast: Locator;
 
 
   constructor(page: Page) {
@@ -55,7 +56,6 @@ export class EventJunction {
     this.dietryPreferance = page.getByPlaceholder('Vegan');
     this.disability = page.getByPlaceholder('Visually Impaired');
     this.buttonSave = page.getByRole('button', { name: 'Save' });
-    // this.buttonSave = page.getByTitle('save');
     this.buttonApply = page.getByRole('button', { name: 'Apply' });
     this.buttonSaveNew = page.getByRole('button', { name: 'Save and New' });
     this.buttonCancel = page.getByRole('button', { name: 'Cancel' });
@@ -79,11 +79,19 @@ export class EventJunction {
     this.ButtonEdit =page.getByTitle('back') ;
     this.ButtonEdit =page.getByTitle('edit') ;
     this.ButtonDelete = page.getByTitle('delete');
-    this.fillFnameValidation = page.locator("xpath=//*[@id='help-message-20']")
-    this.fillLnameValidation = page.locator("xpath=//*[@id='help-message-23']")
-    this.fillEmailValidation = page.locator("xpath=//*[@id='help-message-26']")
-    this.fillCompanyValidation = page.locator("xpath=//*[@id='help-message-29']")
-    this.fillTitleValidation = page.locator("xpath=//*[@id='help-message-32']")
+    this.fillFnameValidation = page.locator("xpath=//*[@id='help-message-20']");
+    this.fillLnameValidation = page.locator("xpath=//*[@id='help-message-23']");
+    this.fillEmailValidation = page.locator("xpath=//*[@id='help-message-26']");
+    this.fillCompanyValidation = page.locator("xpath=//*[@id='help-message-29']");
+    this.fillTitleValidation = page.locator("xpath=//*[@id='help-message-32']");
+    // locator for checking the toast if all fields are filled on the attendee registration page
+    this.attendeeInfoErrorToast = page.getByText("Please fill all mandatory fields");
+
+    // this.fillFnameValidation = page.locator("//div[@class='slds-form-element__help']")
+    // this.fillLnameValidation = page.locator("//div[@class='slds-form-element__help']")
+    // this.fillEmailValidation = page.locator("//div[@class='slds-form-element__help']")
+    // this.fillCompanyValidation = page.locator("//div[@class='slds-form-element__help']")
+    // this.fillTitleValidation = page.locator("//div[@class='slds-form-element__help']")
 
   }
 
@@ -94,6 +102,10 @@ export class EventJunction {
     await this.getStarted();
     await expect(this.ButtonBack).toBeVisible();
     await this.ButtonBack.click();
+  }
+
+  async CheckToast(){
+    await expect(this.attendeeInfoErrorToast).toBeVisible();
   }
 
   async ClickButtonEdit(){
@@ -186,6 +198,7 @@ export class EventJunction {
   async checkValidationfirstPage(text: string) {
     await this.getStarted();
     await expect(this.fillFnameValidation || this.fillLnameValidation || this.fillCompanyValidation || this.fillEmailValidation || this.fillTitleValidation).toBeVisible();
+    // await expect(this.fillCompanyValidation)
   }
 
   async fillDisability(text: string) {
@@ -249,13 +262,12 @@ export class EventJunction {
 
  }
 async topage2(){
-  //Make it random
   await this.getStarted();
   await this.fillfirstName(fName);
   await this.fillLastName(lName);
   await this.fillEmail(email);
-  await this.fillCompany("CloudJunction");
-  await this.fillTitle("Architect");
+  await this.fillCompany(company);
+  await this.fillTitle(title);
   await this.clickcheckbox();
   await expect(this.buttonNext).toBeVisible();
   await this.buttonNext.click();
