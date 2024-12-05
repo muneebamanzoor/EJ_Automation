@@ -50,9 +50,6 @@ export default defineConfig({
 
 
 
-
-
-
 // import { defineConfig, devices } from '@playwright/test';
 
 // /**
