@@ -9,11 +9,13 @@ var company = faker.company.name();
 var title = faker.person.jobTitle(); 
 
 export class EventJunction {
-  readonly fillFnameValidation: Locator;
-  readonly fillLnameValidation: Locator;
-  readonly fillEmailValidation: Locator;
-  readonly fillCompanyValidation: Locator;
-  readonly fillTitleValidation: Locator;
+  readonly FnameValidation: Locator;
+  readonly LnameValidation: Locator;
+  readonly WorkEmailValidation: Locator;
+  readonly CompanyValidation: Locator;
+  readonly TitleValidation: Locator;
+  readonly PhoneValidation: Locator;
+  readonly EmailValidation: Locator;
   readonly page: Page;
   readonly name: Locator;
   readonly email: Locator;
@@ -27,6 +29,8 @@ export class EventJunction {
   readonly lastName: Locator;
   readonly company: Locator;
   readonly title: Locator;
+  readonly phone: Locator;
+  readonly workemail: Locator;
   readonly addselfasattendee: Locator;
   readonly buttonNext: Locator;
   readonly page1: Locator;
@@ -47,51 +51,69 @@ export class EventJunction {
   readonly CardCVV: Locator;
   readonly ButtonSubmitPayment: Locator;
   readonly attendeeInfoErrorToast: Locator;
+  readonly StandardEntryTicket: Locator;
+  readonly MembershipEntryTicket: Locator;
+  readonly PremiumEntryTicket: Locator;
 
 
   constructor(page: Page) {
     this.page = page;
     this.name = page.getByPlaceholder('Name');
     this.email = page.getByPlaceholder('Email');
+    this.workemail = page.getByPlaceholder('Work Email');
     this.dietryPreferance = page.getByPlaceholder('Vegan');
     this.disability = page.getByPlaceholder('Visually Impaired');
     this.buttonSave = page.getByRole('button', { name: 'Save' });
     this.buttonApply = page.getByRole('button', { name: 'Apply' });
-    this.buttonSaveNew = page.getByRole('button', { name: 'Save and New' });
+    // this.buttonSaveNew = page.getByRole('button', { name: 'Save and New' });
+    this.buttonSaveNew = page.locator("xpath=//button[normalize-space()='Save & New']");
     this.buttonCancel = page.getByRole('button', { name: 'Cancel' });
     this.buttonAddAttendee = page.getByRole('button', { name: 'Add Attendee' });
     this.firstName = page.getByPlaceholder('First Name');
     this.lastName = page.getByPlaceholder('Last Name');
     this.company = page.getByPlaceholder('Company');
-    this.title = page.getByPlaceholder('Title');
+    this.title = page.getByPlaceholder('Job Title');
+    this.phone = page.getByPlaceholder('Mobile')
     this.addselfasattendee = page.locator("xpath=//*[@class='slds-checkbox_faux']");
     this.buttonNext = page.getByRole('button', { name: 'Next' });
-    this.attendeeinfopage = page.locator("//h1[normalize-space()='Attendee Information']")
-    this.page3 = page.locator("xpath=//h1[normalize-space()='Step 3 of 3']");
-    this.page2 = page.locator("xpath=//h1[normalize-space()='Step 2 of 3']");
-    this.page1 = page.locator("xpath=//h1[normalize-space()='Step 1 of 3']");
+    this.attendeeinfopage = page.locator("//h1[normalize-space()='Attendee Details']")
+    this.page3 = page.locator("xpath=//h1[normalize-space()='Registration: Step 3 of 3']");
+    this.page2 = page.locator("xpath=//h1[normalize-space()='Registration: Step 2 of 3']");
+    this.page1 = page.locator("xpath=//h1[normalize-space()='Registration: Step 1 of 3']");
     this.CardHolderName = page.getByPlaceholder('Mark Johnson');
     this.CardNumber = page.getByPlaceholder('41921-21823912-1232');
     this.ExpiryMonth=page.getByPlaceholder('10');
     this.ExpiryYear=page.getByPlaceholder('2027');
     this.CardCVV=page.getByPlaceholder('****');
     this.ButtonSubmitPayment = page.getByRole('button', { name: 'Submit Payment' });
-    this.ButtonEdit =page.getByTitle('back') ;
-    this.ButtonEdit =page.getByTitle('edit') ;
+    this.ButtonBack = page.locator("xpath=//button[@title='back']//lightning-primitive-icon[@exportparts='icon']");
+    this.ButtonEdit = page.getByTitle('edit') ;
     this.ButtonDelete = page.getByTitle('delete');
-    this.fillFnameValidation = page.locator("xpath=//*[@id='help-message-20']");
-    this.fillLnameValidation = page.locator("xpath=//*[@id='help-message-23']");
-    this.fillEmailValidation = page.locator("xpath=//*[@id='help-message-26']");
-    this.fillCompanyValidation = page.locator("xpath=//*[@id='help-message-29']");
-    this.fillTitleValidation = page.locator("xpath=//*[@id='help-message-32']");
+    // this.FnameValidation = page.locator("xpath=//*[@id='help-message-20']");
+    this.FnameValidation = page.getByText("Complete this field.");
+    // this.LnameValidation = page.locator("xpath=//*[@id='help-message-23']");
+    this.LnameValidation = page.getByText("Complete this field.");
+    // this.WorkEmailValidation = page.locator("xpath=//*[@id='help-message-29']");
+    this.WorkEmailValidation = page.getByText("Complete this field.");
+    // this.CompanyValidation = page.locator("xpath=//*[@id='help-message-32']");
+    this.CompanyValidation = page.getByText("Complete this field.");
+    // this.TitleValidation = page.locator("xpath=//*[@id='help-message-26']");
+    this.TitleValidation = page.getByText("Complete this field.");
+    // this.PhoneValidation = page.locator("xpath=//*[@id='help-message-35']");
+    this.PhoneValidation = page.getByText("Complete this field.");
+
+    // this.EmailValidation = page.locator("xpath=//*[@id='help-message-140']");
+    this.EmailValidation = page.getByText('You have entered an invalid format.');
+
     // locator for checking the toast if all fields are filled on the attendee registration page
     this.attendeeInfoErrorToast = page.getByText("Please fill all mandatory fields");
 
-    // this.fillFnameValidation = page.locator("//div[@class='slds-form-element__help']")
-    // this.fillLnameValidation = page.locator("//div[@class='slds-form-element__help']")
-    // this.fillEmailValidation = page.locator("//div[@class='slds-form-element__help']")
-    // this.fillCompanyValidation = page.locator("//div[@class='slds-form-element__help']")
-    // this.fillTitleValidation = page.locator("//div[@class='slds-form-element__help']")
+    this.StandardEntryTicket =page.locator("xpath=lightning-tile[data-id='a04As000001StDtIAK']");
+    // this.StandardEntryTicket =page.locator("xpath=//p[normalize-space()='Standard Entry']");
+    this.MembershipEntryTicket = page.locator("xpath=lightning-tile[data-id='a04As000001Tju1IAC']");
+    // this.MembershipEntryTicket = page.locator("xpath=//p[normalize-space()='Membership Entry']");
+    this.PremiumEntryTicket = page.locator("xpath=lightning-tile[data-id='a04As000001TjvdIAC']");
+    // this.PremiumEntryTicket = page.locator("xpath=//p[normalize-space()='Premium Entry']");
 
   }
 
@@ -153,6 +175,11 @@ export class EventJunction {
     await this.email.fill(text);
   }
 
+  async fillWorkEmail(text: string) {
+    await this.getStarted();
+    await expect(this.workemail).toBeVisible();
+    await this.workemail.fill(text);
+  }
 
   async fillDietPreference(text: string) {
     await this.getStarted();
@@ -160,13 +187,11 @@ export class EventJunction {
     await this.dietryPreferance.fill(text);
   }
 
-
   async fillName(text: string) {
     await this.getStarted();
     await expect(this.name).toBeVisible();
     await this.name.fill(text);
   }
-
 
   async fillfirstName(text: string) {
     await this.getStarted();
@@ -174,13 +199,11 @@ export class EventJunction {
     await this.firstName.fill(text);
   }
 
-
   async fillLastName(text: string) {
     await this.getStarted();
     await expect(this.lastName).toBeVisible();
     await this.lastName.fill(text);
   }
-
 
   async fillCompany(text: string) {
     await this.getStarted();
@@ -188,16 +211,27 @@ export class EventJunction {
     await this.company.fill(text);
   }
 
-
   async fillTitle(text: string) {
     await this.getStarted();
     await expect(this.title).toBeVisible();
     await this.title.fill(text);
   }
 
-  async checkValidationfirstPage(text: string) {
+  async fillPhone(text: string) {
     await this.getStarted();
-    await expect(this.fillFnameValidation || this.fillLnameValidation || this.fillCompanyValidation || this.fillEmailValidation || this.fillTitleValidation).toBeVisible();
+    await expect(this.phone).toBeVisible();
+    await this.phone.fill(text);
+  }
+
+  async checkValidationfirstPage() {
+    await this.getStarted();
+    await expect(this.FnameValidation || this.LnameValidation || this.CompanyValidation || this.WorkEmailValidation || this.TitleValidation || this.PhoneValidation).toBeVisible();
+    // await expect(this.fillCompanyValidation)
+  }
+
+  async checkEmailValidationAttendeePage() {
+    await this.getStarted();
+    await expect(this.EmailValidation).toBeVisible();
     // await expect(this.fillCompanyValidation)
   }
 
@@ -225,6 +259,24 @@ export class EventJunction {
   await this.buttonSaveNew.click();
  }
  
+ async clickPremiumEntryTicket(){
+  await this.getStarted();
+  await expect(this.PremiumEntryTicket).toBeVisible();
+  await this.PremiumEntryTicket.click();
+ }
+
+ async clickMembershipEntryTicket(){
+  await this.getStarted();
+  await expect(this.MembershipEntryTicket).toBeVisible();
+  await this.MembershipEntryTicket.click();
+ }
+
+ async clickStandardEntryTicket(){
+  await this.getStarted();
+  await expect(this.StandardEntryTicket).toBeVisible();
+  await this.StandardEntryTicket.click();
+ }
+
 
  async clickbuttonNext(){
   await this.getStarted();
@@ -265,19 +317,23 @@ async topage2(){
   await this.getStarted();
   await this.fillfirstName(fName);
   await this.fillLastName(lName);
-  await this.fillEmail(email);
+  await this.fillWorkEmail(email);
   await this.fillCompany(company);
   await this.fillTitle(title);
+  await this.fillPhone('0787827');
   await this.clickcheckbox();
   await expect(this.buttonNext).toBeVisible();
   await this.buttonNext.click();
+  await this.getPage2();
  }
 
   async topage3(){
+    await this.goto();
   await this.getStarted();
   await this.topage2();
   await expect(this.buttonCheckout).toBeVisible();
   await this.buttonCheckout.click();
+  await this.getPage3();
  }
 
  async topage4(){
@@ -288,6 +344,10 @@ async topage2(){
   await this.ConfirmPay.click();
 
  }
+
+ async SelectTicket(){
+  await (this.StandardEntryTicket.click() ||this.PremiumEntryTicket.click() ||this.MembershipEntryTicket.click())
+ };
 
  async fillCardHolderName(text: string) {
   await this.getStarted();
