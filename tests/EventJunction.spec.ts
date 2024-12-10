@@ -8,6 +8,8 @@ var lName = faker.person.lastName();
 var email = faker.internet.email();
 var company = faker.company.name();
 var title = faker.person.jobTitle(); 
+var phone = '+346-0097-3411';
+
 
 test('has title', async ({ page }) => {
   await page.goto('https://flow-saas-3661-dev-ed.scratch.my.site.com/s/?eventId=a05As00000AbSdtIAF');
@@ -19,7 +21,7 @@ test('has title', async ({ page }) => {
 
 
 //Page1 test cases
-test('TC6 - Registration form includes fields: Full Name, Email, Company, Title, Add registeration for self', async ({ page }) => {
+test('TC6 - Registration form includes fields: First Name, LastName, Work Email, Company, Job Title, Add me as an Attendee, Phone', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
@@ -28,6 +30,7 @@ test('TC6 - Registration form includes fields: Full Name, Email, Company, Title,
   await EvJ.fillEmail(email);
   await EvJ.fillCompany(company);
   await EvJ.fillTitle(title);
+  await EvJ.fillPhone(phone);
   await expect(page.locator("xpath=//*[@class='slds-checkbox_faux']")).toBeVisible();
   await EvJ.clickcheckbox();
   await expect(EvJ.addselfasattendee).toBeChecked();
@@ -53,8 +56,9 @@ test('TC9 - Leaving the Title field blank should show an error message', async (
   await EvJ.fillLastName(lName);
   await EvJ.fillEmail(email);
   await EvJ.fillCompany(company);
+  await EvJ.fillPhone(phone);
   await EvJ.clickbuttonNext();
-  await expect(EvJ.fillTitleValidation).toBeVisible();
+  await expect(EvJ.TitleValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 });
 
@@ -67,8 +71,9 @@ test('TC9 - Leaving the Company field blank should show an error message', async
   await EvJ.fillLastName(lName);
   await EvJ.fillEmail(email);
   await EvJ.fillTitle(title);
+  await EvJ.fillPhone(phone);
   await EvJ.clickbuttonNext();
-  await expect(EvJ.fillCompanyValidation).toBeVisible();
+  await expect(EvJ.CompanyValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 });
 
@@ -82,8 +87,9 @@ test('TC9 - Leaving the Email field blank should show an error message', async (
   await EvJ.fillLastName(lName);
   await EvJ.fillTitle(title);
   await EvJ.fillCompany(company);
+  await EvJ.fillPhone(phone);
   await EvJ.clickbuttonNext();
-  await expect(EvJ.fillEmailValidation).toBeVisible();
+  await expect(EvJ.WorkEmailValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 });
 
@@ -96,8 +102,23 @@ test('TC9 - Leaving the LastName field blank should show an error message', asyn
   await EvJ.fillTitle(title);
   await EvJ.fillCompany(company);
   await EvJ.fillEmail(email);
+  await EvJ.fillPhone(lName);
   await EvJ.clickbuttonNext();
-  await expect(EvJ.fillLnameValidation).toBeVisible();
+  await expect(EvJ.LnameValidation).toBeVisible();
+  await expect(EvJ.page1).toBeVisible();
+});
+
+test('TC9 - Leaving the Phone field blank should show an error message', async ({ page }) => {
+  const EvJ = new EventJunction(page);
+  await EvJ.goto();
+  await EvJ.getStarted();
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillTitle(title);
+  await EvJ.fillCompany(company);
+  await EvJ.fillEmail(email);
+  await EvJ.fillPhone(phone);
+  await EvJ.clickbuttonNext();
+  await expect(EvJ.LnameValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 });
 
@@ -110,8 +131,9 @@ test('TC9 - Leaving the FirstName field blank should show an error message', asy
   await EvJ.fillCompany(company);
   await EvJ.fillEmail(email);
   await EvJ.fillLastName(lName);
+  await EvJ.fillPhone(phone);
   await EvJ.clickbuttonNext();
-  await expect(EvJ.fillFnameValidation).toBeVisible();
+  await expect(EvJ.FnameValidation).toBeVisible();
   await expect(EvJ.page1).toBeVisible();
 });
 
@@ -125,56 +147,34 @@ test('TC12 - Clicking on the next button on Contact details', async ({ page }) =
   await EvJ.fillEmail(email);
   await EvJ.fillCompany(company);
   await EvJ.fillTitle(title);
+  await EvJ.fillPhone(phone);
   await EvJ.clickbuttonNext();
   await EvJ.getPage2();
 });
 
+//PAGE3 testcases Attendee registeration
 
-// test('TC14', async ({ page }) => {
-//   const EvJ = new EventJunction(page);
-//   await EvJ.goto();
-// //   await EvJ.getStarted();
-//   await EvJ.fillfirstName("Aleem");
-//   await EvJ.fillLastName("Abdul");
-//   await EvJ.fillEmail("Aleem@examplse.com");
-//   await EvJ.fillCompany("CloudJunction");
-//   await EvJ.fillTitle("QA");
-//   await EvJ.clickbuttonNext();
-// //   await EvJ.getPage2();
-//   await EvJ.clickAddAttendee();
-//   await EvJ.getattendeeinfopage();
-//   await EvJ.fillfirstName("Peter");
-//   await EvJ.fillLastName("Pan");
-//   await EvJ.fillEmail("peter@pan.com");
-//   await EvJ.fillTitle("engineer");
-//   await EvJ.clickbuttonSave();
-//   await EvJ.getPage2();
-// });
-
-
-test('TC14 - Dietary preferences and disability needs fields should be optional', async ({ page }) => {
-    const EvJ = new EventJunction(page);
+test('TC27 - Verify visiblility of fields Name, Email, Email, Title, Ticket Type' , async ({ page }) => {
+  const EvJ = new EventJunction(page);
     await EvJ.goto();
-    // await EvJ.getStarted();
     await EvJ.fillfirstName(fName);
     await EvJ.fillLastName(lName);
-    await EvJ.fillEmail(email);
+    await EvJ.fillWorkEmail(email);
     await EvJ.fillCompany(company);
     await EvJ.fillTitle(title);
+    await EvJ.fillPhone(phone);
     await EvJ.clickbuttonNext();
     await EvJ.getPage2();
     await EvJ.clickAddAttendee();
     await EvJ.getattendeeinfopage();
-    await EvJ.fillfirstName(fName);
-    await EvJ.fillLastName(lName);
-    await EvJ.fillEmail(email);
-    await EvJ.fillTitle(title);
-    await EvJ.clickbuttonSave();
-    await EvJ.getPage2();
-  });
+    await expect.soft(page.getByPlaceholder('First Name')).toBeVisible();
+    await expect.soft(page.getByPlaceholder('Last Name')).toBeVisible();
+    await expect.soft(page.getByPlaceholder('Email')).toBeVisible();
+    await expect.soft(page.getByPlaceholder('Title')).toBeVisible();
+    await expect.soft(page.getByPlaceholder('Title')).toBeVisible();
+});
 
-
-test('TC149 - Verify that dietary preferences and disability needs fields are optional', async ({ page }) => {
+test('TC150 - Validation should show if ticket is not selected on AttendeeRegistrationPage', async ({ page }) => {
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
@@ -183,6 +183,7 @@ test('TC149 - Verify that dietary preferences and disability needs fields are op
   await EvJ.fillEmail(email);
   await EvJ.fillCompany(company);
   await EvJ.fillTitle(title);
+  await EvJ.fillPhone(phone);
   await EvJ.clickbuttonNext();
   await EvJ.getPage2();
   await EvJ.clickAddAttendee();
@@ -190,44 +191,114 @@ test('TC149 - Verify that dietary preferences and disability needs fields are op
   await EvJ.fillLastName(lName);
   await EvJ.fillEmail(email);
   await EvJ.fillTitle(title);
-  await EvJ.clickbuttonSaveNew();
+  await EvJ.clickbuttonSave();
+  await EvJ.CheckToast();
   //checkforattendeeinformation
 });
-//PAGE3 testcases Attendee registeration
-//Verify that the Attendee registration page has fields: 'Name', 'Email', 'Dietary Preferance',
-//'Disability Needs' and 'Ticket Type'
+
+test('TC151 - Adding a Membership Entry Ticket', async ({ page }) => {
+    const EvJ = new EventJunction(page);
+    await EvJ.goto();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillWorkEmail(email);
+    await EvJ.fillCompany(company);
+    await EvJ.fillTitle(title);
+    await EvJ.fillPhone(phone);
+    await EvJ.clickbuttonNext();
+    await EvJ.getPage2();
+    await EvJ.clickAddAttendee();
+    await EvJ.getattendeeinfopage();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillTitle(title);
+    await EvJ.clickMembershipEntryTicket(); // Adding Tickets are not functional yet
+    await EvJ.clickbuttonSave();
+    await EvJ.getPage2();
+  });
 
 
-test('TC27 - Verify visiblility of fields Name, Email, Dietary Preferance, Disability Needs, Ticket Type' , async ({ page }) => {
-  // Click the get started link.
-  await expect.soft(page.getByPlaceholder('First Name')).toBeVisible();
-  await expect.soft(page.getByPlaceholder('Last Name')).toBeVisible();
-  await expect.soft(page.getByPlaceholder('Email')).toBeVisible();
-  await expect.soft(page.getByPlaceholder('Title')).toBeVisible();
-  await expect.soft(page.getByPlaceholder('Vegan')).toBeVisible();
-  await expect.soft(page.getByPlaceholder('Visually Impaired')).toBeVisible();
+test('TC152 - Adding a Standard Entry Ticket', async ({ page }) => {
+  const EvJ = new EventJunction(page);
+    await EvJ.goto();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillWorkEmail(email);
+    await EvJ.fillCompany(company);
+    await EvJ.fillTitle(title);
+    await EvJ.fillPhone(phone);
+    await EvJ.clickbuttonNext();
+    await EvJ.getPage2();
+    await EvJ.clickAddAttendee();
+    await EvJ.getattendeeinfopage();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillTitle(title);
+    await EvJ.clickStandardEntryTicket(); // Adding Tickets are not functional yet
+    await EvJ.clickbuttonSave();
+    await EvJ.getPage2();
+});
+
+test('TC153 - Adding a Premium Entry Ticket', async ({ page }) => {
+  const EvJ = new EventJunction(page);
+    await EvJ.goto();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillWorkEmail(email);
+    await EvJ.fillCompany(company);
+    await EvJ.fillTitle(title);
+    await EvJ.fillPhone(phone);
+    await EvJ.clickbuttonNext();
+    await EvJ.getPage2();
+    await EvJ.clickAddAttendee();
+    await EvJ.getattendeeinfopage();
+    await EvJ.fillfirstName(fName);
+    await EvJ.fillLastName(lName);
+    await EvJ.fillEmail(email);
+    await EvJ.fillTitle(title);
+    await EvJ.clickPremiumEntryTicket(); // Adding Tickets are not functional yet
+    await EvJ.clickbuttonSave();
+    await EvJ.getPage2();
 });
 
 
-// TC8 and TC148 are same
-test('TC8  - Verify the validation for email field in add attendee page', async ({ page }) => {
+
+test('TC8  - Verify the validation for email field in add attendee page(Save Button)', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
-  await EvJ.getStarted();
+  // await EvJ.getStarted();
+  await EvJ.topage2();
+  await EvJ.clickAddAttendee();
+  await EvJ.getattendeeinfopage();
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email)
   await EvJ.fillEmail("abc");
   await EvJ.clickbuttonSave();
+  await EvJ.checkEmailValidationAttendeePage();
+  await EvJ.CheckToast();
  //await expect(EvJ.page3).toBeVisible();
 });
 
 
-test('TC148 - Verify the validation for email field in add attendee page', async ({ page }) => {
+test('TC148 - Verify the validation for email field in add attendee page(Save&New button)', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
-  await EvJ.getStarted();
+  // await EvJ.getStarted();
+  await EvJ.topage2();
+  await EvJ.clickAddAttendee();
+  await EvJ.getattendeeinfopage();
+  await EvJ.fillfirstName(fName);
+  await EvJ.fillLastName(lName);
+  await EvJ.fillEmail(email)
   await EvJ.fillEmail("abc");
   await EvJ.clickbuttonSaveNew();
+  await EvJ.checkEmailValidationAttendeePage();
+  await EvJ.CheckToast();
  //await expect(EvJ.page3).toBeVisible();
 });
 
@@ -239,24 +310,24 @@ test('TC22 - Save button adds the attendee to the main registration page with th
   await EvJ.fillfirstName(fName);
   await EvJ.fillLastName(lName);
   await EvJ.fillEmail(email);
-  await EvJ.fillCompany("CloudJunction");
-  await EvJ.fillTitle("QA");
+  await EvJ.fillCompany(company);
+  await EvJ.fillTitle(title);
+  await EvJ.fillPhone(phone);
   await EvJ.clickbuttonNext();
   await EvJ.getPage2();
   await EvJ.clickAddAttendee();
   await EvJ.fillfirstName("Peter");
   await EvJ.fillLastName("Pan");
   await EvJ.fillEmail("peter@pan.com");
-  await EvJ.fillTitle("engineer");
-  await EvJ.fillDisability("Visually Repaired");
-  await EvJ.fillDietPreference("Vegan");
+  await EvJ.fillTitle("QA");
+  await page.locator("xpath=//*[@class='slds-grid slds-grid_align-center']//lightning-layout[1]//div[1]//slot[1]").click();// standardticketlocator
+  // await EvJ.clickStandardEntryTicket();
   await EvJ.clickbuttonSave();
   await EvJ.getPage2();
+
+  await expect.soft(page.locator("xpath=//h1[normalize-space()='Peter Pan']")).toBeVisible();
+  await expect.soft(page.getByText("QA | peter@pan.com")).toBeVisible();
  
-  await expect.soft(page.getByRole('heading', { name: 'Peter Pan - Standard Entry' }).first()).toBeVisible();
-  await expect.soft(page.getByRole('heading', { name: '(123) 129-0121 | peter@pan.com | Tesla' }).first()).toBeVisible();
-  await expect.soft(page.locator("text=' Vegan'").first()).toBeVisible();
-  await expect.soft(page.locator("text=' Visually Repaired'").first()).toBeVisible();
 });
 
 
@@ -266,39 +337,42 @@ test('TC144 - Functionality of back button in page 3', async ({ page }) => {
   await EvJ.goto();
   await EvJ.getStarted();
   await EvJ.topage2();
-  await EvJ.topage3();
-  //await EvJ.clickButtonBack();
+  await EvJ.clickbuttonCheckout();
+  await EvJ.getPage3();
+  await EvJ.ClickButtonBack(); // await page.locator("xpath='lightning-primitive-icon[exportparts='icon']'").click();
   await EvJ.getPage2();
+  
 });
 
 
-test('TC144.1 - Functionality of back button in page 3', async ({ page }) => {
+test('TC144.1 - Functionality of back button in page 2', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
   await EvJ.topage2();
-  //await EvJ.clickButtonBack();
+  // await page.locator("xpath=//button[@title='back']//lightning-primitive-icon[@exportparts='icon']").click();
+  await EvJ.ClickButtonBack();
   await EvJ.getPage1();
 });
 
 
-test('TC144.2 - Functionality of back button in page 2', async ({ page }) => {
+test('TC144.2 - Functionality of back button in page 1', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  //await EvJ.clickButtonBack();
+  await EvJ.ClickButtonBack();
   //await EvJ.checkhomepage();
 });
 
 
-test('TC144.3 - Functionality of back button in page 1', async ({ page }) => {
+test('TC144.3 - Functionality of cancel button in page 1', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
   await EvJ.getStarted();
-  await EvJ.clickbuttonCancel();
+  await EvJ.ClickButtonBack();
   //await EvJ.checkhomepage();
 });
 
@@ -309,7 +383,7 @@ test('TC143 - Functionality of back button in page 4', async ({ page }) => {
   await EvJ.goto();
   await EvJ.getStarted();
   await EvJ.clickbuttonCancel();
-  //await EvJ.checkhomepage();s
+  //await EvJ.checkhomepage();
 });
 
 
@@ -336,7 +410,7 @@ test('TC141,TC140,137 - Calculation - Delete Attendee, Add Attendee, Change Tick
   await EvJ.fillfirstName(fName);
   await EvJ.fillLastName(lName); //Expiry date is past
   await EvJ.fillTitle(title);
-  //await EvJ.SelectTicket();
+  await EvJ.SelectTicket();
   await EvJ.clickbuttonSave();
   //await EvJ.checkTotal();
   //await EvJ.clickbuttonEdit();
@@ -427,7 +501,7 @@ test('TC110 - Two attendees should not have same email address', async ({ page }
 });
 
 
-test('TCTC111.2 - 1 promocode for redemption is left and 2 attendees are registering ', async ({ page }) => {
+test('TC111.2 - 1 promocode for redemption is left and 2 attendees are registering ', async ({ page }) => {
   // Click the get started link.
   const EvJ = new EventJunction(page);
   await EvJ.goto();
@@ -695,7 +769,6 @@ test('TC90 - Duplicate attendee should not be created for the same registration'
   await expect(errorMessage).toBeVisible();
 });
 
-// the following code is to check that validation are working correctly
 test('CheckError - Checking if validation is showing', async ({ page }) => {
   const EvJ = new EventJunction(page);
     await EvJ.goto(); //
